@@ -1,0 +1,21 @@
+$AddTodo-border-bottom-color: gainsboro;
+$Todo-border-bottom-color: cornflowerblue;
+
+@mixin button() {
+  margin-top: 1vh;
+  border: 0;
+  border-radius: 20%;
+  background: none;
+  font-weight: bold;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+@mixin inputText($color) {
+  width: 100%;
+  border: 0;
+  border-bottom: solid $color;
+  outline: none;
+  margin-right: 15px;
+  transition: border-color 0.3s ease; /* 애니메이션 효과 추가 */
+}

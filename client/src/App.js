@@ -7,7 +7,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [title, setTitle] = useState("");
   const [todoList, setTodoList] = useState([]);
-  // const [todoList, setTodoList] = useState(null);
+  const [showNotification, setShowNotification] = useState(false);
 
   const addTodo = async () => {
     if (title !== "") {
@@ -22,11 +22,19 @@ function App() {
           };
           setTodoList([...todoList, newTodo]);
           setTitle("");
+          setShowNotification(true); //알림창 표시
+          setTimeout(() => {
+            setShowNotification(false);
+          }, 2000);
         }
       } catch (error) {
         console.log("Error adding todo", error);
       }
     }
+  };
+
+  const handleOnKeyDownAdd = (e) => {
+    if (e.key === "Enter") addTodo();
   };
 
   const checkTodo = async (id) => {
@@ -126,13 +134,20 @@ function App() {
         </div>
       ) : (
         <div className="main">
-          <div>My Todo List</div>
-          <form>
+          {showNotification && (
+            <div className="notification show">할 일이 추가되었습니다</div>
+          )}
+          <div className="Title">My Todo List</div>
+          <form className="AddTodo">
+            <input type="text" style={{ display: "none" }} />
             <input
               type="text"
               placeholder="Add your new TODO"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+              onKeyDown={(e) => {
+                handleOnKeyDownAdd(e); // enter키 누를 때 업데이트 요청
+              }}
             />
             <button type="button" onClick={addTodo}>
               ADD
@@ -147,10 +162,12 @@ function App() {
                       type="checkbox"
                       name="todo"
                       checked={item.done}
+                      id="checkLabel"
                       onChange={() => {
                         checkTodo(item.id);
                       }}
                     />
+
                     <input
                       type="text"
                       value={item.title}
